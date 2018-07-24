@@ -1,0 +1,6 @@
+univention-node-exporter (0.0.0-2) unstable; urgency=medium
+
+  * Bug #XXXXX: initial version 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 26 Jun 2018 17:51:50 +0200
+

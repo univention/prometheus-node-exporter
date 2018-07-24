@@ -1,0 +1,10 @@
+#!/bin/sh
+
+systemctl daemon-reload
+deb-systemd-helper enable prometheus-node-exporter.service
+service prometheus-node-exporter restart
+
+service apache2 reload
+
+. /usr/share/univention-lib/base.sh
+call_joinscript 55univention-node-exporter.inst
