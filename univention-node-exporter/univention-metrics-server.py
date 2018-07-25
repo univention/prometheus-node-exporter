@@ -29,19 +29,33 @@
 # <http://www.gnu.org/licenses/>.
 
 import shutil
+import time
 
 from univention.pkgdb import build_sysversion
 from univention.config_registry import ConfigRegistry
-ucr = ConfigRegistry()
-ucr.load()
-
+from univention.appcenter.app_cache import Apps
+from univention.appcenter.actions import get_action
 
 NODE_EXPORTER_DIR = "/var/lib/prometheus/node-exporter"
 
 
 def write_metrics(metrics_file):
-	server_version = build_sysversion(ucr)
-	metrics_file.write("univention_server_version{{version=\"{}\"}} 1\n".format(server_version))
+
+	metrics = dict()
+	metrics['version'] = build_sysversion(ucr)
+	metrics['ucs_role'] = ucr.get('server/role')
+	metrics['update_available'] = ucr.get('update/available')
+	metrics['installed_apps'] = ' '.join([x.id for x in Apps().get_all_locally_installed_apps()])
+	upgrade = get_action('upgrade')
+	metrics['upgradable_apps'] = ' '.join([x.id for x in list(upgrade.iter_upgradable_apps())])
+
+	data = 'univention_server_info{'
+	for k, v in metrics.iteritems():
+		data += '{}="{}",'.format(k, v)
+	data = data.rstrip(',')
+	data += '} %s\n' % time.time()
+
+	metrics_file.write(data)
 
 
 def main():
@@ -52,4 +66,6 @@ def main():
 
 
 if __name__ == "__main__":
+	ucr = ConfigRegistry()
+	ucr.load()
 	main()
