@@ -53,7 +53,7 @@ def write_metrics(metrics_file):
 	for k, v in metrics.iteritems():
 		data += '{}="{}",'.format(k, v)
 	data = data.rstrip(',')
-	data += '} %s\n' % time.time()
+	data += '} %s\n' % (int(time.time()) * 1000)
 
 	metrics_file.write(data)
 
