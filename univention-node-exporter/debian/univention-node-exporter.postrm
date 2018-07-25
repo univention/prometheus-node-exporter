@@ -1,0 +1,4 @@
+#!/bin/bash
+
+ucr unset cron/univention-metrics-server/command
+ucr unset cron/univention-metrics-server/time

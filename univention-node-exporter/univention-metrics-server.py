@@ -1,6 +1,5 @@
-#!/bin/bash
-#
-# univention-node-metrics join script
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 #
 # Copyright 2018 Univention GmbH
 #
@@ -29,16 +28,28 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-## joinscript api: bindpwdfile
+import shutil
 
-VERSION="1"
+from univention.pkgdb import build_sysversion
+from univention.config_registry import ConfigRegistry
+ucr = ConfigRegistry()
+ucr.load()
 
-. /usr/share/univention-lib/all.sh
-. /usr/share/univention-join/joinscripthelper.lib
 
-joinscript_init
-ucs_addServiceToLocalhost "metrics-node" "$@"
+NODE_EXPORTER_DIR = "/var/lib/prometheus/node-exporter"
 
-joinscript_save_current_version
 
-exit 0
+def write_metrics(metrics_file):
+	server_version = build_sysversion(ucr)
+	metrics_file.write("univention_server_version{{version=\"{}\"}} 1\n".format(server_version))
+
+
+def main():
+	filename = "{}/univention-server-metrics.prom.$$".format(NODE_EXPORTER_DIR)
+	with open(filename, 'w') as metrics_file:
+		write_metrics(metrics_file)
+	shutil.move(filename, filename.replace('.$$', ''))
+
+
+if __name__ == "__main__":
+	main()

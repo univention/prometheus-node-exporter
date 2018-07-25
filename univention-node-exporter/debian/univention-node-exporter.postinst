@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 systemctl daemon-reload
 deb-systemd-helper enable prometheus-node-exporter.service
@@ -7,4 +7,6 @@ service prometheus-node-exporter restart
 service apache2 reload
 
 . /usr/share/univention-lib/base.sh
+ucr set cron/univention-metrics-server/command='/usr/lib/univention-node-exporter/univention-metrics-server.py'
+ucr set cron/univention-metrics-server/time='*/5 * * * *'
 call_joinscript 55univention-node-exporter.inst
