@@ -36,4 +36,7 @@ service apache2 reload
 ucr set \
 	cron/univention-metrics-server/command='/usr/lib/univention-node-exporter/univention-metrics-server.py' \
 	cron/univention-metrics-server/time='*/5 * * * *'
+
+/usr/lib/univention-node-exporter/univention-metrics-server.py
+
 call_joinscript 55univention-node-exporter.inst
