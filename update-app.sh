@@ -32,3 +32,5 @@ docker run -v "$(pwd)":/opt --rm $DOCKER_IMAGE /bin/bash -c "
 	"
 
 selfservice upload "$APP_VERSION" univention-node-exporter*.deb  prometheus-node-exporter*.deb
+
+rm -f univention-node-exporter*.deb
