@@ -1,6 +1,12 @@
+univention-node-exporter (0.0.0-3) unstable; urgency=medium
+
+  * metrics update
+
+ -- Felix Botner <botner@univention.de>  Thu, 26 Jul 2018 11:16:00 +0200
+
 univention-node-exporter (0.0.0-2) unstable; urgency=medium
 
-  * Bug #XXXXX: initial version 
+  * initial version
 
  -- Jürn Brodersen <brodersen@univention.de>  Tue, 26 Jun 2018 17:51:50 +0200
 

@@ -10,7 +10,7 @@ Build-Depends: debhelper (>= 7.0.50~),
 Standards-Version: 3.8.2
 
 Package: univention-node-exporter
-Architecture: any
+Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
  prometheus-node-exporter,
  univention-apache,

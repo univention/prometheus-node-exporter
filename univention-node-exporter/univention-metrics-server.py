@@ -42,13 +42,13 @@ NODE_EXPORTER_DIR = "/var/lib/prometheus/node-exporter"
 def write_metrics(metrics_file):
 
 	metrics = dict()
-	metrics['a1_name'] = ucr.get('hostname') + '.' + ucr.get('domainname')
-	metrics['a2_version'] = build_sysversion(ucr)
-	metrics['a3_ucs_role'] = ucr.get('server/role')
-	metrics['a4_update_available'] = ucr.get('update/available')
-	metrics['a5_installed_apps'] = ' '.join([x.id for x in Apps().get_all_locally_installed_apps()])
+	metrics['a100_name'] = ucr.get('hostname') + '.' + ucr.get('domainname')
+	metrics['a200_version'] = build_sysversion(ucr)
+	metrics['a300_ucs_role'] = ucr.get('server/role')
+	metrics['a400_update_available'] = ucr.get('update/available')
+	metrics['a500_installed_apps'] = ' '.join([x.id for x in Apps().get_all_locally_installed_apps()])
 	upgrade = get_action('upgrade')
-	metrics['a6_upgradable_apps'] = ' '.join([x.id for x in list(upgrade.iter_upgradable_apps())])
+	metrics['a600_upgradable_apps'] = ' '.join([x.id for x in list(upgrade.iter_upgradable_apps())])
 
 	data = 'univention_server_info{'
 	for k, v in metrics.iteritems():
