@@ -1,3 +1,9 @@
+univention-node-exporter (0.0.0-5) unstable; urgency=medium
+
+  * Use ldap directly for authentication.
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 06 Aug 2018 10:41:49 +0200
+
 univention-node-exporter (0.0.0-4) unstable; urgency=medium
 
   * added cron.d

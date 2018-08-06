@@ -26,11 +26,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+#DEBHELPER#
+
 . /usr/share/univention-lib/base.sh
 
 systemctl daemon-reload
 deb-systemd-helper enable prometheus-node-exporter.service
 service prometheus-node-exporter restart
+a2enmod ldap
+a2enmod authnz_ldap
 service apache2 reload
 
 ucr set \
@@ -40,3 +44,5 @@ ucr set \
 /usr/lib/univention-node-exporter/univention-metrics-server.py
 
 call_joinscript 55univention-node-exporter.inst
+
+exit 0

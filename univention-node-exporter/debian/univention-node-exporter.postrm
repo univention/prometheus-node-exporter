@@ -26,6 +26,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+#DEBHELPER#
+
 ucr unset \
 	cron/univention-metrics-server/command \
 	cron/univention-metrics-server/time
+
+exit 0

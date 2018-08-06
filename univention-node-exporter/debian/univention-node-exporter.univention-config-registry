@@ -1,0 +1,6 @@
+Type: file
+File: etc/apache2/ucs-sites.conf.d/univention-node-exporter.conf
+Variables: ldap/base
+Variables: ldap/server/name
+Variables: ldap/server/port
+Variables: ldap/hostdn
