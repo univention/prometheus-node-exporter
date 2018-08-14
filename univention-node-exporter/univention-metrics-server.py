@@ -30,6 +30,7 @@
 
 import shutil
 import time
+import os
 
 from univention.pkgdb import build_sysversion
 from univention.config_registry import ConfigRegistry
@@ -38,35 +39,53 @@ from univention.appcenter.actions import get_action
 
 NODE_EXPORTER_DIR = "/var/lib/prometheus/node-exporter"
 
+class ServerMetricsUCS(object):
 
-def write_metrics(metrics_file):
+	def __init__(self):
+		self.data = list()
+		self.ucr = ConfigRegistry()
+		self.ucr.load()
 
-	metrics = dict()
-	metrics['a100_name'] = ucr.get('hostname') + '.' + ucr.get('domainname')
-	metrics['a200_version'] = build_sysversion(ucr)
-	metrics['a300_ucs_role'] = ucr.get('server/role')
-	metrics['a400_update_available'] = ucr.get('update/available')
-	metrics['a500_installed_apps'] = ' '.join([x.id for x in Apps().get_all_locally_installed_apps()])
-	upgrade = get_action('upgrade')
-	metrics['a600_upgradable_apps'] = ' '.join([x.id for x in list(upgrade.iter_upgradable_apps())])
+	def server_info(self):
+		metrics = dict()
+		metrics['a100_name'] = self.ucr.get('hostname') + '.' + self.ucr.get('domainname')
+		metrics['a200_version'] = build_sysversion(self.ucr)
+		metrics['a300_ucs_role'] = self.ucr.get('server/role')
+		metrics['a400_update_available'] = self.ucr.get('update/available')
+		metrics['a500_installed_apps'] = ', '.join([x.name for x in Apps().get_all_locally_installed_apps()])
+		upgrade = get_action('upgrade')
+		metrics['a600_upgradable_apps'] = ', '.join([x.name for x in list(upgrade.iter_upgradable_apps())])
+		data = 'univention_server_info{'
+		for k, v in metrics.iteritems():
+			data += '{}="{}",'.format(k, v)
+		data = data.rstrip(',')
+		data += '} %s' % (int(time.time()) * 1000)
+		self.data.append(data)
 
-	data = 'univention_server_info{'
-	for k, v in metrics.iteritems():
-		data += '{}="{}",'.format(k, v)
-	data = data.rstrip(',')
-	data += '} %s\n' % (int(time.time()) * 1000)
+	def listener_metrics(self):
+		notifier_id_file = '/var/lib/univention-directory-listener/notifier_id'
+		n_id = None
+		if os.path.isfile(notifier_id_file):
+			with open(notifier_id_file, 'r') as f:
+				n_id = f.readline()
+		if n_id is None:
+			n_id = '0'
+		self.data.append('ucs_notifier_id {}'.format(n_id))
 
-	metrics_file.write(data)
+	def main(self):
 
+		# get metrixy
+		self.server_info()
+		self.listener_metrics()
 
-def main():
-	filename = "{}/univention-server-metrics.prom.$$".format(NODE_EXPORTER_DIR)
-	with open(filename, 'w') as metrics_file:
-		write_metrics(metrics_file)
-	shutil.move(filename, filename.replace('.$$', ''))
+		# write data
+		filename = "{}/univention-server-metrics.prom.$$".format(NODE_EXPORTER_DIR)
+		with open(filename, 'w') as f:
+			for d in self.data:
+				f.write(d + '\n')
+		shutil.move(filename, filename.replace('.$$', ''))
 
 
 if __name__ == "__main__":
-	ucr = ConfigRegistry()
-	ucr.load()
-	main()
+	m = ServerMetricsUCS()
+	m.main()
