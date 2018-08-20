@@ -51,7 +51,7 @@ class ServerMetricsUCS(object):
 		metrics['a100_name'] = self.ucr.get('hostname') + '.' + self.ucr.get('domainname')
 		metrics['a200_version'] = build_sysversion(self.ucr)
 		metrics['a300_ucs_role'] = self.ucr.get('server/role')
-		metrics['a400_update_available'] = 16 * ' ' + '%s' % self.ucr.get('update/available')
+		metrics['a400_update_available'] = self.ucr.get('update/available')
 		metrics['a500_installed_apps'] = ', '.join([x.name for x in Apps().get_all_locally_installed_apps()])
 		upgrade = get_action('upgrade')
 		metrics['a600_upgradable_apps'] = ', '.join([x.name for x in list(upgrade.iter_upgradable_apps())])
