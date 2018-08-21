@@ -56,9 +56,9 @@ class ServerMetricsUCS(object):
 		if self.ucr.is_true('update/available', True):
 			update_avail = 'yes'
 		metrics['a400_update_available'] = update_avail
-		metrics['a500_installed_apps'] = ', '.join([x.name for x in Apps().get_all_locally_installed_apps()])
+		metrics['a500_installed_apps'] = '<br />'.join([x.name for x in Apps().get_all_locally_installed_apps()])
 		upgrade = get_action('upgrade')
-		metrics['a600_upgradable_apps'] = ', '.join([x.name for x in list(upgrade.iter_upgradable_apps())])
+		metrics['a600_upgradable_apps'] = '<br />'.join([x.name for x in list(upgrade.iter_upgradable_apps())])
 		data = 'univention_server_info{'
 		for k, v in metrics.iteritems():
 			data += '{}="{}",'.format(k, v)
