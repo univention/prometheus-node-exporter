@@ -39,6 +39,7 @@ from univention.appcenter.actions import get_action
 
 NODE_EXPORTER_DIR = "/var/lib/prometheus/node-exporter"
 
+
 class ServerMetricsUCS(object):
 
 	def __init__(self):
@@ -51,7 +52,10 @@ class ServerMetricsUCS(object):
 		metrics['a100_name'] = self.ucr.get('hostname') + '.' + self.ucr.get('domainname')
 		metrics['a200_version'] = build_sysversion(self.ucr)
 		metrics['a300_ucs_role'] = self.ucr.get('server/role')
-		metrics['a400_update_available'] = self.ucr.get('update/available')
+		update_avail = 'no'
+		if self.ucr.is_true('update/available', True):
+			update_avail = 'yes'
+		metrics['a400_update_available'] = update_avail
 		metrics['a500_installed_apps'] = ', '.join([x.name for x in Apps().get_all_locally_installed_apps()])
 		upgrade = get_action('upgrade')
 		metrics['a600_upgradable_apps'] = ', '.join([x.name for x in list(upgrade.iter_upgradable_apps())])
