@@ -1,4 +1,7 @@
 #!/bin/bash
+#
+# unjoin script
+#
 # Copyright 2018 Univention GmbH
 #
 # http://www.univention.de/
@@ -26,28 +29,18 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-#DEBHELPER#
+VERSION=1
 
-. /usr/share/univention-lib/base.sh
+. /usr/share/univention-join/joinscripthelper.lib
+. /usr/share/univention-lib/all.sh
 
-systemctl daemon-reload
-deb-systemd-helper enable prometheus-node-exporter.service
-service prometheus-node-exporter restart
-a2enmod ldap
-a2enmod authnz_ldap
-service apache2 reload
+joinscript_init
 
-ucr set \
-	cron/univention-metrics-server/command='/usr/lib/univention-node-exporter/univention-metrics-server.py' \
-	cron/univention-metrics-server/time='*/5 * * * *'
+eval "$(univention-config-registry shell)"
 
-/usr/lib/univention-node-exporter/univention-metrics-server.py
+# remove service
+ucs_removeServiceFromLocalhost "metrics-node" "$@" || die
 
-if [ "$1" = "configure" ]; then
-	uinst=/usr/lib/univention-install/55univention-node-exporter.uinst
-	[ -e "$uinst" ] && rm "$uinst"
-fi
-
-call_joinscript 55univention-node-exporter.inst
+joinscript_remove_script_from_status_file univention-node-exporter
 
 exit 0

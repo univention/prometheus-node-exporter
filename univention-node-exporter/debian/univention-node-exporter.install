@@ -1,4 +1,5 @@
 etc/
 usr/
 55univention-node-exporter.inst usr/lib/univention-install/
+55univention-node-exporter.uinst usr/lib/univention-uninstall/
 univention-metrics-server.py usr/lib/univention-node-exporter/
