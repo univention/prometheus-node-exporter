@@ -3,7 +3,7 @@
 set -e
 set -x
 
-APP_VERSION="4.3/prometheus-node-exporter=1.0-beta"
+APP_VERSION="4.3/prometheus-node-exporter=1.0-beta2"
 DOCKER_IMAGE="docker.software-univention.de/ucs-appbox-amd64:4.3-0"
 
 selfservice () {
