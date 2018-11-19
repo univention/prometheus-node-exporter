@@ -28,7 +28,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import shutil
 import time
 import os
 
@@ -83,11 +82,13 @@ class ServerMetricsUCS(object):
 		self.listener_metrics()
 
 		# write data
-		filename = "{}/univention-server-metrics.prom.$$".format(NODE_EXPORTER_DIR)
-		with open(filename, 'w') as f:
+		filename = os.path.join(NODE_EXPORTER_DIR, 'univention-server-metrics.prom')
+		tmp = "{}.{}".format(filename, os.getpid())
+		with open(tmp, 'w') as f:
 			for d in self.data:
 				f.write(d + '\n')
-		shutil.move(filename, filename.replace('.$$', ''))
+		if os.path.exists(tmp):
+			os.rename(tmp, filename)
 
 
 if __name__ == "__main__":
