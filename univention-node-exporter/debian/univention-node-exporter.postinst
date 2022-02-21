@@ -45,18 +45,4 @@ service cron reload || true
 
 /usr/lib/univention-node-exporter/univention-metrics-server.py
 
-if [ "$1" = "configure" ]; then
-	uinst=/usr/lib/univention-install/55univention-node-exporter.uinst
-	[ -e "$uinst" ] && rm "$uinst"
-fi
-
-if [ "$1" = "configure" -a -n "$2" ]; then
-	if dpkg --compare-versions "$2" lt 0.0.0-12; then
-		rm -f /etc/cron.d/univention-node-exporter
-		service cron reload || true
-	fi
-fi
-
-call_joinscript 55univention-node-exporter.inst
-
 exit 0

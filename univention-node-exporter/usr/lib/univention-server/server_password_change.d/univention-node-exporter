@@ -29,8 +29,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval "$(univention-config-registry shell)"
-
 if [ "$1" = "postchange" ] ; then
 	# reload apache to update ldap secret
 	systemctl reload apache2.service

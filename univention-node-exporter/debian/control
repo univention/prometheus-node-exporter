@@ -2,16 +2,14 @@ Source: univention-node-exporter
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7.0.50~),
+Build-Depends: debhelper,
  univention-config-dev,
- python-all,
- python-support,
- ucslint-univention
+ univention-join-dev,
 Standards-Version: 3.8.2
 
 Package: univention-node-exporter
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends},
+Depends: ${misc:Depends}, ${python3:Depends},
  prometheus-node-exporter (>= 0.17),
  univention-apache,
 Description: UCS: promethues node metrics
