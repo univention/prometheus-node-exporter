@@ -30,6 +30,7 @@
 
 import time
 import os
+import html
 
 from univention.pkgdb import build_sysversion
 from univention.config_registry import ConfigRegistry
@@ -52,9 +53,9 @@ class ServerMetricsUCS(object):
 		metrics['a200_version'] = build_sysversion(self.ucr)
 		metrics['a300_ucs_role'] = self.ucr.get('server/role')
 		metrics['a400_update_available'] = 'yes' if self.ucr.is_true('update/available', True) else 'no'
-		metrics['a500_installed_apps'] = '<br />'.join(x.name for x in Apps().get_all_locally_installed_apps())
+		metrics['a500_installed_apps'] = '<br />'.join(html.escape(x.name) for x in Apps().get_all_locally_installed_apps())
 		upgrade = get_action('upgrade')
-		metrics['a600_upgradable_apps'] = '<br />'.join(x.name for x in upgrade.iter_upgradable_apps())
+		metrics['a600_upgradable_apps'] = '<br />'.join(html.escape(x.name) for x in upgrade.iter_upgradable_apps())
 		data = 'univention_server_info{'
 		for k, v in metrics.items():
 			data += '{}="{}",'.format(k, v)
