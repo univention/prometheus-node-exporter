@@ -1,7 +1,7 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Univention GmbH
+# Copyright 2018-2022 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -51,15 +51,12 @@ class ServerMetricsUCS(object):
 		metrics['a100_name'] = self.ucr.get('hostname') + '.' + self.ucr.get('domainname')
 		metrics['a200_version'] = build_sysversion(self.ucr)
 		metrics['a300_ucs_role'] = self.ucr.get('server/role')
-		update_avail = 'no'
-		if self.ucr.is_true('update/available', True):
-			update_avail = 'yes'
-		metrics['a400_update_available'] = update_avail
-		metrics['a500_installed_apps'] = '<br />'.join([x.name for x in Apps().get_all_locally_installed_apps()])
+		metrics['a400_update_available'] = 'yes' if self.ucr.is_true('update/available', True) else 'no'
+		metrics['a500_installed_apps'] = '<br />'.join(x.name for x in Apps().get_all_locally_installed_apps())
 		upgrade = get_action('upgrade')
-		metrics['a600_upgradable_apps'] = '<br />'.join([x.name for x in list(upgrade.iter_upgradable_apps())])
+		metrics['a600_upgradable_apps'] = '<br />'.join(x.name for x in upgrade.iter_upgradable_apps())
 		data = 'univention_server_info{'
-		for k, v in metrics.iteritems():
+		for k, v in metrics.items():
 			data += '{}="{}",'.format(k, v)
 		data = data.rstrip(',')
 		data += '} %s' % (int(time.time()) * 1000)
@@ -76,8 +73,7 @@ class ServerMetricsUCS(object):
 		self.data.append('ucs_notifier_id {}'.format(n_id))
 
 	def main(self):
-
-		# get metrixy
+		# get metrics
 		self.server_info()
 		self.listener_metrics()
 
