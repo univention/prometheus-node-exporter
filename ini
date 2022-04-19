@@ -1,7 +1,7 @@
 [Application]
 ID = prometheus-node-exporter
 Code = 1R
-Version = 1.2
+Version = 2.0.1
 Name = UCS Dashboard Client
 Vendor = Univention GmbH
 DefaultPackages = univention-node-exporter
@@ -23,7 +23,7 @@ SupportUrl = https://www.univention.com/products/support/community-support/
 Contact = sales@univention.de
 Categories = Administration
 AppCategories = Infrastructure
-Website = https://docs.software-univention.de/manual-4.4.html#dashboard::general
+Website = https://docs.software-univention.de/manual-5.0.html#dashboard::general
 NotifyVendor = True
 NotificationEmail = appcenter-reporting@univention.de
 WebsiteVendor = https://www.univention.com/
@@ -40,7 +40,7 @@ LongDescription = <p>
 	<p>
 	Die &quot;UCS Dashboard Client&quot; App muss auf allen UCS-Servern installiert werden, die in der &quot;UCS Dashboard&quot; App verfügbar sein sollen. Die &quot;UCS Dashboard&quot; App selbst muss auf einem der UCS-Server installiert werden.
 	</p>
-Website = https://docs.software-univention.de/handbuch-4.4.html#dashboard::general
+Website = https://docs.software-univention.de/handbuch-5.0.html#dashboard::general
 WebsiteVendor = https://www.univention.de/
 Vendor = Univention GmbH
 

@@ -3,7 +3,7 @@
 set -e
 set -x
 
-APP_VERSION="prometheus-node-exporter=2.0.0"
+APP_VERSION="5.0/prometheus-node-exporter=2.0.1"
 
 selfservice () {
 	local uri="https://provider-portal.software-univention.de/appcenter-selfservice/univention-appcenter-control"
