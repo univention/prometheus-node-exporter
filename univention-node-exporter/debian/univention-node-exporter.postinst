@@ -32,16 +32,23 @@
 
 systemctl daemon-reload
 deb-systemd-helper enable prometheus-node-exporter.service
-service prometheus-node-exporter restart
+systemctl restart prometheus-node-exporter
 a2enmod ldap
 a2enmod authnz_ldap
-service apache2 reload
+systemctl reload apache2
 
 ucr set \
 	cron/univention-metrics-server/command='/usr/lib/univention-node-exporter/univention-metrics-server.py' \
 	cron/univention-metrics-server/time='*/20 * * * *'
 
-service cron reload || true
+systemctl reload cron || true
+
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "2.0.1-1"; then
+	# rewrite targets.json and make sure prometheus uses the latest version
+	systemctl restart univention-directory-listener
+	sleep 5
+	univention-app restart prometheus || true
+fi
 
 /usr/lib/univention-node-exporter/univention-metrics-server.py
 
