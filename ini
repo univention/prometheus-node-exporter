@@ -1,7 +1,7 @@
 [Application]
 ID = prometheus-node-exporter
 Code = 1R
-Version = 1.1
+Version = 1.2
 Name = UCS Dashboard Client
 Vendor = Univention GmbH
 DefaultPackages = univention-node-exporter

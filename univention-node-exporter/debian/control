@@ -12,7 +12,7 @@ Standards-Version: 3.8.2
 Package: univention-node-exporter
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
- prometheus-node-exporter,
+ prometheus-node-exporter (>= 0.17),
  univention-apache,
 Description: UCS: promethues node metrics
  This package installs required packages to allow monitoring

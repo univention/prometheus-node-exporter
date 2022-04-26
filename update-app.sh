@@ -3,7 +3,7 @@
 set -e
 set -x
 
-APP_VERSION="4.3/prometheus-node-exporter=1.1"
+APP_VERSION="4.4/prometheus-node-exporter=1.2"
 DOCKER_IMAGE="docker.software-univention.de/ucs-appbox-amd64:4.3-0"
 
 selfservice () {
@@ -23,8 +23,8 @@ test -n "$(git status -s)" && die "Changes in repo, do not upload app!"
 
 # build package
 docker run -v "$(pwd)":/opt --rm $DOCKER_IMAGE /bin/bash -c "
-	apt-get -y update;
-	apt-get -y install dpkg-dev build-essential debhelper univention-config-dev python-all ucslint-univention;
+	apt-get -y  update --allow-insecure-repositories;
+	apt-get -y --allow-unauthenticated  install dpkg-dev build-essential debhelper univention-config-dev python-all ucslint-univention;
 	cp -a /opt/univention-node-exporter /tmp;
 	cd /tmp/univention-node-exporter
 	dpkg-buildpackage;
