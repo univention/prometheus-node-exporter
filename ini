@@ -28,7 +28,7 @@ NotifyVendor = True
 NotificationEmail = appcenter-reporting@univention.de
 WebsiteVendor = https://www.univention.com/
 SupportType = univention
-
+SupportedUcsVersions = 4.4-9
 [de]
 Description = Prometheus Node Exporter basierender Client für das UCS Dashboard
 LongDescription = <p>
